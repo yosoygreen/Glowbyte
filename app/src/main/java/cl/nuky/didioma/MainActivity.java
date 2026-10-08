@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
         root.setBackgroundColor(Color.rgb(17,19,21));
 
         TextView title = new TextView(this);
-        title.setText("DIDIOMA");
+        title.setText("LAUTAKKA");
         title.setTextColor(Color.WHITE);
         title.setTextSize(34);
         title.setGravity(Gravity.CENTER);
@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
         root.addView(title, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         TextView info = new TextView(this);
-        info.setText("Teclado oficial del idioma.\n\n1. Activa DIDIOMA.\n2. Selecciónalo como teclado.\n3. Escribe normalmente.\n\nNo hay mayúsculas. La segunda capa contiene los signos gramaticales.");
+        info.setText("Teclado oficial del idioma.\n\n1. Activa LAUTAKKA.\n2. Selecciónalo como teclado.\n3. Escribe normalmente.\n\nNo hay mayúsculas. La segunda capa contiene los signos gramaticales.");
         info.setTextColor(Color.rgb(220,225,230));
         info.setTextSize(17);
         info.setGravity(Gravity.CENTER);
@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
         enable.setOnClickListener(v -> startActivity(new Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)));
         root.addView(enable, lp());
 
-        Button choose = button("2 · Elegir DIDIOMA");
+        Button choose = button("2 · Elegir LAUTAKKA");
         choose.setOnClickListener(v -> {
             android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
             imm.showInputMethodPicker();
@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
         root.addView(choose, lp());
 
         TextView note = new TextView(this);
-        note.setText("El teclado muestra los glifos con DIDIOMA.ttf. Fuera del teclado, cada app decide cómo renderizar los caracteres.");
+        note.setText("El teclado muestra los glifos de LAUTAKKA. Fuera del teclado, cada app decide cómo renderizar los caracteres.");
         note.setTextColor(Color.rgb(160,170,180));
         note.setTextSize(13);
         note.setGravity(Gravity.CENTER);
