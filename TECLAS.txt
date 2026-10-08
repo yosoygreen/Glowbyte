@@ -1,0 +1,25 @@
+DIDIOMA Android v1.0
+
+LETRAS (4 x 7)
+A  B  D  E  F  G  H
+I  J  K  L  M  N  Ñ
+O  P  R  S  T  U  W
+X  Y  Z  É  Ú  Ü  Ş
+
+ESPECIALES
+É = TH
+Ú = RR
+Ü = LL
+Ş = SH
+
+SIGNOS
+~  = virgulilla
+`  = apóstrofe simple
+^  = doble apóstrofe / identidad
+*  = circunstancia
+±  = punto medio / causa-manera
+°  = ordinal
+|  = pleca
+¡  = imperativo
+¥  = imperativo negado
+|| = doble pleca / base de pregunta
