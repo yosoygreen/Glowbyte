@@ -28,10 +28,9 @@ public class DidiomaKeyboardView extends View {
     private String pressedValue = null;
 
     private static final String[][] LETTERS = {
-            {"A","B","D","E","F","G","H"},
-            {"I","J","K","L","M","N","Ñ"},
-            {"O","P","R","S","T","U","W"},
-            {"X","Y","Z","É","Ú","Ü","Ş"}
+            {"Ş","W","E","R","T","Y","U","I","O","P","É"},
+            {"A","S","D","F","G","H","J","K","L","Ñ"},
+            {"Z","X","Ú","Ü","B","N","M"}
     };
 
     private static final String[][] SYMBOLS = {
