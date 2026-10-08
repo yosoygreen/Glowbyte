@@ -26,15 +26,18 @@ public class DidiomaKeyboardView extends View {
     private boolean symbols = false;
     private boolean numbers = false;
     private String pressedValue = null;
+    private int navigationInsetBottom = 0;
 
+    // Distribucion basada en QWERTY. Las letras inexistentes se reemplazan
+    // por letras propias del idioma.
     private static final String[][] LETTERS = {
             {"Ş","W","E","R","T","Y","U","I","O","P","É"},
             {"A","S","D","F","G","H","J","K","L","Ñ"},
-            {"Z","X","Ú","Ü","B","N","M"}
+            {"Z","X","Ú","Ü","B","N","M","#BS"}
     };
 
     private static final String[][] SYMBOLS = {
-            {"~","`","^","*","±","°","|"},
+            {"~","\u0060","^","*","±","°","|"},
             {"¡","¥","||"," "," "," "," "}
     };
 
@@ -94,6 +97,16 @@ public class DidiomaKeyboardView extends View {
         pronunciationPaint.setColor(Color.rgb(170,180,190));
         pronunciationPaint.setTypeface(Typeface.DEFAULT);
         pronunciationPaint.setTextAlign(Paint.Align.RIGHT);
+
+        setOnApplyWindowInsetsListener((v, insets) -> {
+            int inset = insets.getSystemWindowInsetBottom();
+            if (inset != navigationInsetBottom) {
+                navigationInsetBottom = inset;
+                requestLayout();
+                invalidate();
+            }
+            return insets;
+        });
     }
 
     public void setListener(Listener l) {
@@ -103,7 +116,7 @@ public class DidiomaKeyboardView extends View {
     @Override
     protected void onMeasure(int ws, int hs) {
         int w = MeasureSpec.getSize(ws);
-        int desired = (int)(getResources().getDisplayMetrics().density * 330);
+        int desired = (int)(getResources().getDisplayMetrics().density * 330) + navigationInsetBottom;
         setMeasuredDimension(w, resolveSize(desired, hs));
     }
 
@@ -122,7 +135,7 @@ public class DidiomaKeyboardView extends View {
     private void drawGrid(Canvas c, String[][] rows, boolean nativeFont, boolean showPronunciation) {
         float gap = dp(5);
         float top = dp(8);
-        float bottomBar = dp(58);
+        float bottomBar = dp(58) + navigationInsetBottom;
         float usableH = getHeight() - bottomBar - top - dp(4);
         float rowH = usableH / rows.length;
 
@@ -138,19 +151,23 @@ public class DidiomaKeyboardView extends View {
                 float t = top + r * rowH + gap / 2;
                 RectF rect = new RectF(l, t, l + keyW, t + rowH - gap);
 
-                drawKey(c, rect, val, val, nativeFont, false, showPronunciation);
+                if ("#BS".equals(val)) {
+                    drawKey(c, rect, "⌫", "#BS", false, true, false);
+                } else {
+                    drawKey(c, rect, val, val, nativeFont, false, showPronunciation);
+                }
             }
         }
     }
 
     private void drawBottom(Canvas c) {
         float gap = dp(5);
-        float y = getHeight() - dp(54);
+        float y = getHeight() - navigationInsetBottom - dp(54);
         float h = dp(48);
 
         float[] weights = {1.0f, 1.0f, 3.3f, 1.0f, 1.0f};
-        String[] labels = {numbers ? "ABC" : "123", symbols ? "ABC" : "◇", "espacio", "⌫", "↵"};
-        String[] actions = {"#NUM", "#SYM", " ", "#BS", "#ENTER"};
+        String[] labels = {numbers ? "ABC" : "123", symbols ? "ABC" : "◇", "espacio", "🌐", "↵"};
+        String[] actions = {"#NUM", "#SYM", " ", "#NEXT", "#ENTER"};
 
         float total = 0;
         for (float f : weights) total += f;
@@ -211,8 +228,6 @@ public class DidiomaKeyboardView extends View {
         if (e.getAction() == MotionEvent.ACTION_UP) {
             Key k = find(e.getX(), e.getY());
 
-            // Antes comparábamos objetos Key. Al redibujar, Android crea una lista nueva
-            // y por eso ninguna tecla llegaba a activarse. Ahora comparamos su valor.
             if (k != null && pressedValue != null && pressedValue.equals(k.value)) {
                 activate(k.value);
             }
@@ -254,6 +269,9 @@ public class DidiomaKeyboardView extends View {
                 break;
             case "#BS":
                 listener.onBackspace();
+                break;
+            case "#NEXT":
+                listener.onNextKeyboard();
                 break;
             case "#ENTER":
                 listener.onEnter();
